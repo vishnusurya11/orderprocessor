@@ -2,6 +2,7 @@
 target-version = "py311"
 line-length = 100
 
+[lint]
 select = [
     "E",   # pycodestyle errors
     "W",   # pycodestyle warnings
@@ -19,7 +20,7 @@ ignore = [
     "B008",  # do not perform function calls in argument defaults
 ]
 
-[per-file-ignores]
+[lint.per-file-ignores]
 "tests/*" = ["S101", "ARG", "PLR2004"]
 
 [format]
