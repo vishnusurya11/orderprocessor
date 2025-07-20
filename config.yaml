@@ -1,0 +1,83 @@
+# Order Processor Configuration
+
+monitoring:
+  new_orders:
+    method: "watchdog"              # Event-based monitoring for new files
+    folder: "orders/pending"
+  
+  active_orders:
+    method: "polling"               # Polling for status updates
+    folder: "orders/processing"
+    interval_seconds: 300           # Check every 5 minutes (configurable)
+    
+api:
+  base_url: "https://paper-api.alpaca.markets"  # Change to live URL for production
+  timeout: 30                       # API request timeout in seconds
+  retry_attempts: 3                 # Number of retry attempts for failed requests
+  retry_delay: 1                    # Initial retry delay in seconds (exponential backoff)
+  rate_limit_per_minute: 200        # Alpaca API rate limit
+  
+logging:
+  level: "INFO"                     # DEBUG, INFO, WARNING, ERROR
+  app_log: "logs/app.log"           # General application log
+  audit_log: "logs/audit.log"       # Audit trail for compliance
+  error_log: "logs/error.log"       # Error-specific log
+  rotate_size_mb: 100               # Rotate logs when they reach this size
+  format: "json"                    # Log format (json for structured logging)
+  
+system:
+  timezone: "US/Eastern"            # Market timezone
+  market_hours_only: true           # Only run during market hours
+  startup_recovery: true            # Check processing folder on startup
+  max_concurrent_orders: 10         # Maximum orders to process simultaneously
+  
+notifications:
+  telegram:
+    enabled: true
+    bot_token: "${TELEGRAM_BOT_TOKEN}"  # From environment variable
+    chat_id: "${TELEGRAM_CHAT_ID}"      # From environment variable
+    
+  severity_settings:
+    sev1:
+      immediate: true
+      repeat_minutes: 5
+      require_ack: true
+    sev2:
+      immediate: true
+    sev3:
+      batch_minutes: 30
+    sev4:
+      daily_time: "16:00"           # 4 PM ET
+    sev5:
+      telegram_enabled: false       # Dashboard only
+      
+  event_severity_mapping:
+    api_connection_lost: 1
+    system_crash: 1
+    order_failed: 2
+    order_stuck: 2
+    order_filled: 3
+    partial_fill: 3
+    daily_stats: 4
+    status_check: 5
+    heartbeat: 5
+
+# Order validation rules
+order_validation:
+  max_order_value: 100000           # Maximum order value in USD
+  allowed_symbols:                  # Leave empty to allow all
+    crypto: []                      # e.g., ["BTC/USD", "ETH/USD"]
+    stocks: []                      # e.g., ["AAPL", "GOOGL", "MSFT"]
+  min_qty:
+    crypto: 0.0001
+    stocks: 1
+  max_qty:
+    crypto: 100
+    stocks: 10000
+
+# Dashboard configuration
+dashboard:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8000
+  auto_open_browser: false

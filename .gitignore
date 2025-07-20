@@ -1,0 +1,82 @@
+# Environment variables - NEVER commit these
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.python-version
+
+# UV
+.venv/
+
+# Testing
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.tox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Logging
+logs/*.log
+logs/*.json
+*.log
+
+# Order files - contain sensitive trading data
+orders/pending/*
+orders/processing/*
+orders/filled/*
+orders/failed/*
+# Keep the folders themselves
+!orders/pending/.gitkeep
+!orders/processing/.gitkeep
+!orders/filled/.gitkeep
+!orders/failed/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Documentation
+docs/_build/
+site/
+
+# Temporary files
+*.tmp
+*.bak
+.cache/
+
+# OS specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+._*
+
+# Project specific
+audit.log
+*.sqlite
+*.db
